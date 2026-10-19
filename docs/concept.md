@@ -8,7 +8,7 @@
 ## 1. 依頼者について（新しいプロジェクトの Claude 向け）
 - 榊原佑貴さん（GitHub: ishibashi0112）。業務システムの開発者。Swift / SwiftUI は未経験なので、コードは Claude が書き、読めるようにコメントを多めにする。
 - 作ったもの: ashiato、kirinuki-db、slnmix、petari、spreadsheet-grid。熱量が出るのは「自分が毎日使う道具」。
-- 開発機は榊原さんの Mac（Xcode 26）。Claude は Remote Control で同じ Mac 上で作業し、ビルドと実機確認はそこで行う。
+- 開発機は榊原さんの Mac（Xcode 27）。Claude は Remote Control で同じ Mac 上で作業し、ビルドと実機確認はそこで行う。
 - 返答は日本語で、会話調で短く。選択を求めるときは一語で答えられる形にして、おすすめを示す。
 - 新しい案を出すときは、既存に同じものがないか先に確認して伝える（この人の明確な希望）。
 
@@ -114,7 +114,7 @@ Claude の仕事は「文字起こしをあとから使える形に整える」�
 ## 11. 開発環境
 | 項目 | 内容 |
 | --- | --- |
-| 開発機 | 榊原さんの Mac と Xcode 26。Claude は Remote Control で同じ Mac 上で作業する |
+| 開発機 | 榊原さんの Mac と Xcode 27（2026-10-19 に 27.1 を導入。iOS 26 向けにビルドでき、watchOS 10 の実機にも対応）。Claude は Remote Control で同じ Mac 上で作業する |
 | アカウント | 無料の Apple ID（Personal Team）。自分の iPhone と Watch で動かすところまで無料（[Apple の比較表](https://developer.apple.com/support/compare-memberships/)） |
 | 7日制限 | 無料アカウントのアプリは7日で起動できなくなる（[Apple のフォーラム](https://developer.apple.com/forums/thread/724896)）。週に1回 Mac につないで入れ直す。`xcodebuild` と `devicectl` でコマンド1本にする。入れ直してもアプリのデータは残る |
 | その他の制限 | 端末あたり3アプリ、アプリ ID は10個まで。プッシュ通知・iCloud・TestFlight は使えない（この設計では不要） |
@@ -133,7 +133,7 @@ Claude の仕事は「文字起こしをあとから使える形に整える」�
 
 ## 13. 新しいプロジェクトでの最初の一歩（段階0 の具体手順）
 1. リポジトリ `ishibashi0112/atoroku` に README・CLAUDE.md・docs/concept.md（この資料の内容）を入れる。CLAUDE.md の絶対ルール: 音声は端末の外に出さない、Claude に渡すのは文字だけ、サーバーを持たない、無料 Apple ID で動く範囲で作る。
-2. Remote Control で榊原さんの Mac に入り、Xcode 26 と `xcrun devicectl list devices` で iPhone 16 が見えることを確認する。
+2. Remote Control で榊原さんの Mac に入り、Xcode 27 と `xcrun devicectl list devices` で iPhone 16 が見えることを確認する。
 3. Xcode で iOS アプリ `Atoroku` を作る（SwiftUI、Personal Team で署名、Bundle ID は `com.<name>.atoroku`）。Signing & Capabilities で Background Modes の「Audio, AirPlay, and Picture in Picture」を有効にし、Info.plist に `NSMicrophoneUsageDescription` を書く。
 4. 録音の芯を作る: `AVAudioSession` を `.playAndRecord` + `.mixWithOthers`（`.allowBluetoothA2DP` は付け、HFP は付けない）で有効化し、`AVAudioEngine` の入力を1分ごとに `AVAudioFile`（AAC、16kHz モノラル）へ切り替えて書く。古いファイルを消して設定時間分だけ残す。中断（`AVAudioSession.interruptionNotification`）とルート変更で再開する。
 5. 画面は「開始」「停止」「今の状態（経過時間、ファイル数、残容量）」だけ。保存ボタンはまだ要らない。
