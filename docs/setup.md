@@ -7,7 +7,7 @@ Xcode は macOS でしか動かない。Windows や Linux では iPhone アプ�
 | --- | --- |
 | Mac と macOS | Xcode 27 は Apple シリコンの Mac と macOS Tahoe 26.6 以上が必要（[Apple の要件表](https://developer.apple.com/xcode/system-requirements/)）。Intel の Mac なら Xcode 26.6（Tahoe 26.2 以上）を使う |
 | Xcode | App Store から Xcode を入れる（2026-10 時点で 27.1、十数 GB）。初回起動の「Install Required」で共通部品を入れ、Components で iOS を追加する（watchOS は段階5で追加すればよい）。あとからは Xcode > Settings > Components |
-| 対応する端末 | Xcode 27 は iOS 15〜27・watchOS 9〜27 向けにビルドでき、実機は iOS 17 以上・watchOS 10 以上に対応する。iPhone 16（iOS 26）も Series 5（watchOS 10）も使える。シミュレーターは iOS 27.1 だが、アプリの最低対応は iOS 26 にする |
+| 対応する端末 | Xcode 27 は iOS 15〜27・watchOS 9〜27 向けにビルドでき、実機は iOS 17 以上・watchOS 10 以上に対応する。iPhone 17（iOS 26）も Series 5（watchOS 10）も使える。シミュレーターは iOS 27.1 だが、アプリの最低対応は iOS 26 にする |
 | External Agent Access | 初回起動で聞かれる。「While Xcode is Open」にしておく。Claude のビルドと実機インストールは `xcodebuild` と `devicectl` で行うので、この設定には左右されない。あとから Settings > Intelligence で変えられる |
 | コマンドライン | `xcodebuild -version` で版が出ることを確認する。「requires Xcode, but active developer directory ... is a command line tools instance」と出たら `sudo xcode-select -s /Applications/Xcode.app/Contents/Developer` で Xcode 本体に切り替える。ライセンスのエラーなら `sudo xcodebuild -license accept` |
 | Apple ID | Xcode > Settings > Accounts に自分の Apple ID を追加する。Personal Team として表示されれば OK（年会費不要） |
@@ -39,3 +39,4 @@ Claude は Remote Control で利用者の Mac に入って、この リポジト
 | --- | --- |
 | Mac | MacBook Air 13インチ（Apple M5、24GB）、macOS Tahoe 26.6.2 |
 | Xcode | 27.1（Build 27A9275）、iOS 27.1 / 27.0 シミュレーター |
+| iPhone | iPhone 17（型番 iPhone18,3）。最初は `devicectl` に出ず、つなぎ直して「信頼」したら出た |

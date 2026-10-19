@@ -21,7 +21,7 @@
 | 項目 | 決定 |
 | --- | --- |
 | 名前 | 「あとろく」（後録）。リポジトリ名 `atoroku`。「あとから」は App Store の後払いアプリ「アトカラ（あとから）」（GMOペイメントサービス）と重なるため変更した。他の候補だった さかろく / きいてた / ききもどし も同名アプリなし |
-| 端末 | iPhone 16（iOS 26）、Apple Watch Series 5（watchOS 10 が最後） |
+| 端末 | iPhone 17（iOS 26）、Apple Watch Series 5（watchOS 10 が最後） |
 | 開発アカウント | 無料の Apple ID（Personal Team）で始める。年99ドルは配布するときだけ |
 | さかのぼる長さ | 設定で可変。初期値30分 |
 | 音声の扱い | 文字起こし後も端末内に残す（初期値30日、設定で変更。残したい録音は固定して消さない）。崩れた文字起こしを聞き直すため。以前は「文字になったら即削除」だったが榊原さんの希望で変更 |
@@ -52,7 +52,7 @@ Watch は合図を送るだけで、マイクと記憶は iPhone が担う。音
 | iOS はバックグラウンドから録音を開始できない（[Apple Developer Forums](https://developer.apple.com/forums/thread/120038)） | 待機開始はアプリが前面にあるときに限る | Control Center のボタン・アクションボタン・通知はどれもアプリを開いてから開始する。開始後は `audio` のバックグラウンドモードで一日続く |
 | 通話や他アプリの音で録音が中断する | 録り漏れ | `AVAudioSession` を `playAndRecord` + `mixWithOthers` で持ち、中断終了の通知で再開する（[実装記事](https://blog.risingstack.com/reliable-background-recording-on-ios-watchos/)） |
 | Watch アプリ自身の裏での録音は不安定 | Watch をマイクにできない | Watch はボタンだけ。`transferUserInfo` は iPhone アプリが裏にいても届く（[Apple Developer Forums](https://developer.apple.com/forums/thread/766559)） |
-| 端末内の文字起こしは iOS 26 が必要 | iPhone 11 以降に限る | iPhone 16 なので問題なし（[SpeechAnalyzer 解説](https://blog.addpipe.com/apple-speechanalyzer-api/)、[WhisperKit との比較](https://www.forasoft.com/blog/article/speech-recognition-with-neural-networks-on-ios-1621)） |
+| 端末内の文字起こしは iOS 26 が必要 | iPhone 11 以降に限る | iPhone 17 なので問題なし（[SpeechAnalyzer 解説](https://blog.addpipe.com/apple-speechanalyzer-api/)、[WhisperKit との比較](https://www.forasoft.com/blog/article/speech-recognition-with-neural-networks-on-ios-1621)） |
 | Apple Watch Series 5 は watchOS 10 が最後 | 新しい watchOS の API は使えない | Watch 側は watchOS 10 を対象にし、WatchConnectivity とボタン画面だけにする |
 | マイク使用中の表示（橙の点） | 一日中つく | 仕様として受け入れる。周囲への説明にも使える |
 
@@ -118,7 +118,7 @@ Claude の仕事は「文字起こしをあとから使える形に整える」�
 | アカウント | 無料の Apple ID（Personal Team）。自分の iPhone と Watch で動かすところまで無料（[Apple の比較表](https://developer.apple.com/support/compare-memberships/)） |
 | 7日制限 | 無料アカウントのアプリは7日で起動できなくなる（[Apple のフォーラム](https://developer.apple.com/forums/thread/724896)）。週に1回 Mac につないで入れ直す。`xcodebuild` と `devicectl` でコマンド1本にする。入れ直してもアプリのデータは残る |
 | その他の制限 | 端末あたり3アプリ、アプリ ID は10個まで。プッシュ通知・iCloud・TestFlight は使えない（この設計では不要） |
-| 端末 | iPhone 16（iOS 26 に更新）、Apple Watch Series 5（watchOS 10 の最新版に更新） |
+| 端末 | iPhone 17（iOS 26 以上）、Apple Watch Series 5（watchOS 10 の最新版に更新） |
 | 費用 | 始めるのに0円。API 代は月数百円（クレジット内）。App Store に出すなら Apple Developer Program 年99ドル |
 
 ## 12. 未決事項
@@ -133,7 +133,7 @@ Claude の仕事は「文字起こしをあとから使える形に整える」�
 
 ## 13. 新しいプロジェクトでの最初の一歩（段階0 の具体手順）
 1. リポジトリ `ishibashi0112/atoroku` に README・CLAUDE.md・docs/concept.md（この資料の内容）を入れる。CLAUDE.md の絶対ルール: 音声は端末の外に出さない、Claude に渡すのは文字だけ、サーバーを持たない、無料 Apple ID で動く範囲で作る。
-2. Remote Control で榊原さんの Mac に入り、Xcode 27 と `xcrun devicectl list devices` で iPhone 16 が見えることを確認する。
+2. Remote Control で榊原さんの Mac に入り、Xcode 27 と `xcrun devicectl list devices` で iPhone 17 が見えることを確認する。
 3. Xcode で iOS アプリ `Atoroku` を作る（SwiftUI、Personal Team で署名、Bundle ID は `com.<name>.atoroku`）。Signing & Capabilities で Background Modes の「Audio, AirPlay, and Picture in Picture」を有効にし、Info.plist に `NSMicrophoneUsageDescription` を書く。
 4. 録音の芯を作る: `AVAudioSession` を `.playAndRecord` + `.mixWithOthers`（`.allowBluetoothA2DP` は付け、HFP は付けない）で有効化し、`AVAudioEngine` の入力を1分ごとに `AVAudioFile`（AAC、16kHz モノラル）へ切り替えて書く。古いファイルを消して設定時間分だけ残す。中断（`AVAudioSession.interruptionNotification`）とルート変更で再開する。
 5. 画面は「開始」「停止」「今の状態（経過時間、ファイル数、残容量）」だけ。保存ボタンはまだ要らない。

@@ -11,7 +11,7 @@
 段階0（一日録り続けられるかの計測）の前。計画は [docs/concept.md](docs/concept.md)、開発環境の用意は [docs/setup.md](docs/setup.md)。
 
 ## 対象
-- iPhone 16（iOS 26）、Apple Watch Series 5（watchOS 10）
+- iPhone 17（iOS 26）、Apple Watch Series 5（watchOS 10）
 - Swift / SwiftUI、Xcode 27、無料の Apple ID（Personal Team）で自分の端末にインストールして使う
 
 ## 注意
