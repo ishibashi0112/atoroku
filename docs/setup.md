@@ -16,9 +16,18 @@ Xcode は macOS でしか動かない。Windows や Linux では iPhone アプ�
 ## iPhone と Watch
 1. iPhone を iOS 26 以上に、Apple Watch を watchOS 10 の最新版に更新する。
 2. iPhone を USB で Mac につなぎ、「このコンピュータを信頼」する。`xcrun devicectl list devices` に出れば OK。以後は Wi-Fi でも接続できる。
-3. iPhone: 設定 > プライバシーとセキュリティ > デベロッパモード を ON にする（再起動あり）。この項目は Mac の Xcode に一度つないだあとに現れる。
+3. iPhone: 設定 > プライバシーとセキュリティ > デベロッパモード を ON にする（再起動あり）。この項目は最初は隠れていて、Xcode から一度アプリを iPhone で実行しようとしたあとに現れる（つないだだけでは出ないことがある）。
 4. Watch: iPhone とペアリング済みなら Xcode に一緒に表示される。Watch 側でもデベロッパモードを求められたら ON にする。
 5. 初めて実機にアプリを入れたあと、iPhone の 設定 > 一般 > VPNとデバイス管理 で自分の Apple ID の開発者を「信頼」する。
+
+### 試し用アプリで通しを確かめる
+Xcode で試し用の iOS アプリを作り、iPhone で「Hello, world!」が出るまで通すと、署名・デベロッパモード・信頼がまとめて片付く。
+- 新しいプロジェクトは Minimum Deployments が端末の iOS より新しいことがあるので、General タブで iOS 26.x にする。
+- Bundle Identifier は仮の値（`devplaceholder…` や `com.mycompany.MyApp`）になっているので、`com.ishibashi0112.<名前>` に変える。Signing の「Set Up」画面では変えられないので、Set Up のあと General タブの Identity か Signing & Capabilities で直す。
+- Signing & Capabilities で Team を Personal Team にして署名を設定すると、実行先の一覧に iPhone が出る。「Your team has no devices」の警告は、iPhone を実行先に選べば消える。
+- 初回の実行では「Copying OS library symbols」が数分出る。iPhone の iOS の情報を Mac にコピーしているだけで、iOS のバージョンごとに1回。
+- iPhone に「信頼されていないデベロッパ」と出たら、上の 5. の手順で信頼する。
+- 確かめたら試し用アプリは iPhone から消す（1台に3アプリまで）。Bundle ID の登録は7日で10個までなので、試しに何度も作らない。
 
 ## 無料アカウントの制限
 - アプリは7日で起動できなくなる。週に1回 Mac につないで入れ直す（データは残る）。`scripts/reinstall.sh` を段階0で用意する（`xcodebuild -scheme Atoroku -destination 'platform=iOS,id=<UDID>' build` → `xcrun devicectl device install app --device <UDID> <path>.app`）。
@@ -39,4 +48,4 @@ Claude は Remote Control で利用者の Mac に入って、この リポジト
 | --- | --- |
 | Mac | MacBook Air 13インチ（Apple M5、24GB）、macOS Tahoe 26.6.2 |
 | Xcode | 27.1（Build 27A9275）、iOS 27.1 / 27.0 シミュレーター |
-| iPhone | iPhone 17（型番 iPhone18,3）。最初は `devicectl` に出ず、つなぎ直して「信頼」したら出た |
+| iPhone | iPhone 17（型番 iPhone18,3）、iOS 26.6.2、デベロッパモード ON。最初は `devicectl` に出ず、つなぎ直して「信頼」したら出た。試し用アプリ `com.ishibashi0112.hello` で実行まで確認 |
