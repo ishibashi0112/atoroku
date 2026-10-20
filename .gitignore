@@ -1,0 +1,9 @@
+# ビルドの出力（scripts/reinstall.sh と xcodebuild は build/DerivedData に書く）
+build/
+DerivedData/
+
+# Xcode が利用者ごとに作るファイル（ウィンドウの状態など）
+xcuserdata/
+*.xcuserstate
+
+.DS_Store
