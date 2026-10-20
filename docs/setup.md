@@ -30,7 +30,7 @@ Xcode で試し用の iOS アプリを作り、iPhone で「Hello, world!」が�
 - 確かめたら試し用アプリは iPhone から消す（1台に3アプリまで）。Bundle ID の登録は7日で10個までなので、試しに何度も作らない。
 
 ## 無料アカウントの制限
-- アプリは7日で起動できなくなる。週に1回 Mac につないで入れ直す（データは残る）。`scripts/reinstall.sh` を段階0で用意する（`xcodebuild -scheme Atoroku -destination 'platform=iOS,id=<UDID>' build` → `xcrun devicectl device install app --device <UDID> <path>.app`）。
+- アプリは7日で起動できなくなる。週に1回 Mac につないで `scripts/reinstall.sh` を実行して入れ直す（データは残る）。中身は `xcodebuild -scheme Atoroku -destination 'platform=iOS,id=<UDID>' -allowProvisioningUpdates build` → `xcrun devicectl device install app --device <UDID> <path>.app`。Mac に「codesign がキーチェーン内のキーを使って署名しようとしています」と出たら、Mac のログインパスワードを入れて「常に許可」を押す（次から出なくなる）。
 - 端末あたり3アプリ、アプリ ID は10個まで。Bundle ID は `com.<name>.atoroku` のように固定して増やさない。
 - プッシュ通知・iCloud・TestFlight は使えない（この設計では不要）。
 

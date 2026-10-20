@@ -8,7 +8,7 @@
 - **音声は iPhone から出ない**: クラウドに上がるのは文字だけ。サーバーは持たない。
 
 ## 状態
-段階0（一日録り続けられるかの計測）の前。計画は [docs/concept.md](docs/concept.md)、開発環境の用意は [docs/setup.md](docs/setup.md)。
+段階0（一日録り続けられるかの計測）。録り続けるだけのアプリ（`Atoroku.xcodeproj`）と計測シート（[docs/stage0.md](docs/stage0.md)）ができたところ。計画は [docs/concept.md](docs/concept.md)、開発環境の用意は [docs/setup.md](docs/setup.md)。
 
 ## 対象
 - iPhone 17（iOS 26）、Apple Watch Series 5（watchOS 10）
